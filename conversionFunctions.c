@@ -84,13 +84,29 @@ int binToHex(char *valToConvPtr, char **retValPtr)
 	int inputSize = 0;
 
 	while (*(valToConvPtr + ++inputSize) != '\0')
-		if (*(valToConvPtr) != '0' || *(valToConvPtr) != '1') /* checking the input is in binary format */
+		if (*(valToConvPtr) != '0' && *(valToConvPtr) != '1') /* checking the input is in binary format */
 			return 1;
-	if (*valToConvPtr == '0' && (*(valToConvPtr + 1) == 'b' || *(valToConvPtr + 1) == 'B'))
+	if (*valToConvPtr == '0' && (*(valToConvPtr + 1) == 'b' || *(valToConvPtr + 1) == 'B')) /* TODO: this check currently doesn't work with above line check */
 	{
 		inputSize -= 2;
 		valToConvPtr += 2;
 	}
+	int retValSize = (inputSize % 4 == 0) ? (inputSize / 4) + 1 : (inputSize / 4) + 2;
+	char *retVal = (char *)malloc(sizeof(char)*retValSize);
+
+	char *trackingPtr = valToConvPtr + inputSize - 1;
+	for(int i = retValSize - 2; i >= 0; i--){
+		int valToInsert = 0;
+		for(int j = 0; j < 4; j++){
+			if(trackingPtr+1 == valToConvPtr)
+				break;
+			valToInsert += (int) (pow(2, j) * ((int) *(trackingPtr--) - '0'));
+		}
+		*(retVal + i) = valToInsert > 9 ? (char) (valToInsert - 10 + 'A') : (char) (valToInsert + '0');
+	}
+	*(retVal + retValSize - 1) = '\0';
+
+	*retValPtr = retVal;
 	return 0;
 } /* -----  end of function binToHex  ----- */
 
