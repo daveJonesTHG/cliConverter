@@ -3,24 +3,25 @@
  *
  *       Filename:  BaseConvert.c
  *
- *    Description:
+ *    Description:	Program for converting between decimal, hexadecimal and binary on the command line
  *
  *        Version:  1.0
  *        Created:  23/05/2022 13:41:43
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (),
- *   Organization:
+ *        Authors:  Dave Jones and Chris Woodham
+ *   Organization:	THG
  *
  * =====================================================================================
  */
+
 #include "BaseConverter.h"
 
 /*
  * ===  FUNCTION  ======================================================================
  *         Name:  parseArgs
- *  Description:
+ *  Description:  parse the command line arguments
  * =====================================================================================
  */
 
@@ -62,7 +63,8 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 /*
  * ===  FUNCTION  ======================================================================
  *         Name:  callFunctionFromFlag
- *  Description:
+ *  Description:  call the appropriate conversion function depending on the flag passed
+ * 				  as a command line argument
  * =====================================================================================
  */
 
@@ -98,7 +100,6 @@ void callFunctionFromFlag(char *conversionType, char **valToConvPtr, char **retV
 /*
  * ===  FUNCTION  ======================================================================
  *         Name:  main
- *  Description:
  * =====================================================================================
  */
 

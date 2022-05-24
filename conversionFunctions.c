@@ -1,15 +1,11 @@
 #include "BaseConverter.h"
 
-int binToHex(char *valToConv, char **retPtr)
-{
-	return 0;
-}
-
-int hexToBin(char *valToConv, char **retPtr)
-{
-	return 0;
-}
-
+/*
+ * ===  FUNCTION  ======================================================================
+ *         Name:  binToDec
+ *  Description:  convert from binary to decimal
+ * =====================================================================================
+ */
 int binToDec(char *valToConvPtr, char **retValPtr)
 {
 	long resultAsLong = 0;
@@ -33,7 +29,7 @@ int binToDec(char *valToConvPtr, char **retValPtr)
 		case '0':
 			break;
 		case '1':
-			resultAsLong += intFromNonDecimal(1, 2, i, inputSize);
+			resultAsLong += longFromNonDecimal(1, 2, i, inputSize);
 			break;
 		default:
 			return 1;
@@ -50,8 +46,14 @@ int binToDec(char *valToConvPtr, char **retValPtr)
 
 	*retValPtr = retVal;
 	return 0;
-}
+} /* -----  end of function binToDec  ----- */
 
+/*
+ * ===  FUNCTION  ======================================================================
+ *         Name:  decToBin
+ *  Description:  convert from decimal to binary
+ * =====================================================================================
+ */
 int decToBin(char *valToConvPtr, char **retValPtr)
 {
 	int firstPower = 1;
@@ -61,8 +63,166 @@ int decToBin(char *valToConvPtr, char **retValPtr)
 	firstPower--;
 	printf("%d\n", firstPower);
 	return 0;
-}
+} /* -----  end of function decToBin  ----- */
 
+/*
+ * ===  FUNCTION  ======================================================================
+ *         Name:  binToHex
+ *  Description:  convert from binary to hexadecimal
+ * =====================================================================================
+ */
+int binToHex(char *valToConvPtr, char **retValPtr)
+{
+	int inputSize = 0;
+
+	while (*(valToConvPtr + ++inputSize) != '\0')
+		if (*(valToConvPtr) != '0' || *(valToConvPtr) != '1') /* checking the input is in binary format */
+			return 1;
+	if (*valToConvPtr == '0' && (*(valToConvPtr + 1) == 'b' || *(valToConvPtr + 1) == 'B'))
+	{
+		inputSize -= 2;
+		valToConvPtr += 2;
+	}
+	return 0;
+} /* -----  end of function binToHex  ----- */
+
+/*
+ * ===  FUNCTION  ======================================================================
+ *         Name:  hexToBin
+ *  Description:  convert from hexadecimal to binary
+ * =====================================================================================
+ */
+int hexToBin(char *valToConvPtr, char **retValPtr)
+{
+	int inputSize = 0;
+	int sizeOfReturnString;
+	char hexCharacter;
+	while (*(valToConvPtr + ++inputSize) != '\0')
+		;
+	if (*valToConvPtr == '0' && (*(valToConvPtr + 1) == 'x' || *(valToConvPtr + 1) == 'X'))
+	{
+		inputSize -= 2;
+		valToConvPtr += 2;
+	}
+	sizeOfReturnString = inputSize * 4;
+	char *retVal = (char *)malloc(sizeof(char) * (sizeOfReturnString + 1));
+	*(retVal + sizeOfReturnString) = '\0';
+	for (int i = sizeOfReturnString - 1; i > 0; i -= 4)
+	{
+		hexCharacter = *(valToConvPtr + (i / 4));
+		switch (hexCharacter)
+		{
+		case '0':
+			retVal[i] = '0';
+			retVal[i - 1] = '0';
+			retVal[i - 2] = '0';
+			retVal[i - 3] = '0';
+			break;
+		case '1':
+			retVal[i] = '1';
+			retVal[i - 1] = '0';
+			retVal[i - 2] = '0';
+			retVal[i - 3] = '0';
+			break;
+		case '2':
+			retVal[i] = '0';
+			retVal[i - 1] = '1';
+			retVal[i - 2] = '0';
+			retVal[i - 3] = '0';
+			break;
+		case '3':
+			retVal[i] = '1';
+			retVal[i - 1] = '1';
+			retVal[i - 2] = '0';
+			retVal[i - 3] = '0';
+			break;
+		case '4':
+			retVal[i] = '0';
+			retVal[i - 1] = '0';
+			retVal[i - 2] = '1';
+			retVal[i - 3] = '0';
+			break;
+		case '5':
+			retVal[i] = '1';
+			retVal[i - 1] = '0';
+			retVal[i - 2] = '1';
+			retVal[i - 3] = '0';
+			break;
+		case '6':
+			retVal[i] = '0';
+			retVal[i - 1] = '1';
+			retVal[i - 2] = '1';
+			retVal[i - 3] = '0';
+			break;
+		case '7':
+			retVal[i] = '1';
+			retVal[i - 1] = '1';
+			retVal[i - 2] = '1';
+			retVal[i - 3] = '0';
+			break;
+		case '8':
+			retVal[i] = '0';
+			retVal[i - 1] = '0';
+			retVal[i - 2] = '0';
+			retVal[i - 3] = '1';
+			break;
+		case '9':
+			retVal[i] = '1';
+			retVal[i - 1] = '0';
+			retVal[i - 2] = '0';
+			retVal[i - 3] = '1';
+			break;
+		case 'a':
+			retVal[i] = '0';
+			retVal[i - 1] = '1';
+			retVal[i - 2] = '0';
+			retVal[i - 3] = '1';
+			break;
+		case 'b':
+			retVal[i] = '1';
+			retVal[i - 1] = '1';
+			retVal[i - 2] = '0';
+			retVal[i - 3] = '1';
+			break;
+		case 'c':
+			retVal[i] = '0';
+			retVal[i - 1] = '0';
+			retVal[i - 2] = '1';
+			retVal[i - 3] = '1';
+			break;
+		case 'd':
+			retVal[i] = '1';
+			retVal[i - 1] = '0';
+			retVal[i - 2] = '1';
+			retVal[i - 3] = '1';
+			break;
+		case 'e':
+			retVal[i] = '0';
+			retVal[i - 1] = '1';
+			retVal[i - 2] = '1';
+			retVal[i - 3] = '1';
+			break;
+		case 'f':
+			retVal[i] = '1';
+			retVal[i - 1] = '1';
+			retVal[i - 2] = '1';
+			retVal[i - 3] = '1';
+			break;
+		default:
+			return 1;
+		}
+	}
+	*retValPtr = retVal;
+
+	return 0;
+} /* -----  end of function hexToBin  ----- */
+
+/*
+ * ===  FUNCTION  ======================================================================
+ *         Name:  decToHex
+ *  Description:  convert from decimal to hexadecimal
+ * =====================================================================================
+ */
 int decToHex(char *valToConvPtr, char **retValPtr)
 {
 	long inputAsLong;
@@ -89,8 +249,14 @@ int decToHex(char *valToConvPtr, char **retValPtr)
 	*retValPtr = retVal;
 
 	return 0;
-}
+} /* -----  end of function decToHex  ----- */
 
+/*
+ * ===  FUNCTION  ======================================================================
+ *         Name:  hexToDec
+ *  Description:  convert from hexadecimal to decimal
+ * =====================================================================================
+ */
 int hexToDec(char *valToConvPtr, char **retValPtr)
 {
 	long resultAsLong = 0;
@@ -114,55 +280,55 @@ int hexToDec(char *valToConvPtr, char **retValPtr)
 		case '0':
 			break;
 		case '1':
-			resultAsLong += intFromNonDecimal(1, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(1, 16, i, inputSize);
 			break;
 		case '2':
-			resultAsLong += intFromNonDecimal(2, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(2, 16, i, inputSize);
 			break;
 		case '3':
-			resultAsLong += intFromNonDecimal(3, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(3, 16, i, inputSize);
 			break;
 		case '4':
-			resultAsLong += intFromNonDecimal(4, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(4, 16, i, inputSize);
 			break;
 		case '5':
-			resultAsLong += intFromNonDecimal(5, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(5, 16, i, inputSize);
 			break;
 		case '6':
-			resultAsLong += intFromNonDecimal(6, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(6, 16, i, inputSize);
 			break;
 		case '7':
-			resultAsLong += intFromNonDecimal(7, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(7, 16, i, inputSize);
 			break;
 		case '8':
-			resultAsLong += intFromNonDecimal(8, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(8, 16, i, inputSize);
 			break;
 		case '9':
-			resultAsLong += intFromNonDecimal(9, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(9, 16, i, inputSize);
 			break;
 		case 'a':
 		case 'A':
-			resultAsLong += intFromNonDecimal(10, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(10, 16, i, inputSize);
 			break;
 		case 'b':
 		case 'B':
-			resultAsLong += intFromNonDecimal(11, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(11, 16, i, inputSize);
 			break;
 		case 'c':
 		case 'C':
-			resultAsLong += intFromNonDecimal(12, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(12, 16, i, inputSize);
 			break;
 		case 'd':
 		case 'D':
-			resultAsLong += intFromNonDecimal(13, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(13, 16, i, inputSize);
 			break;
 		case 'e':
 		case 'E':
-			resultAsLong += intFromNonDecimal(14, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(14, 16, i, inputSize);
 			break;
 		case 'f':
 		case 'F':
-			resultAsLong += intFromNonDecimal(15, 16, i, inputSize);
+			resultAsLong += longFromNonDecimal(15, 16, i, inputSize);
 			break;
 		default:
 			return 1;
@@ -179,15 +345,29 @@ int hexToDec(char *valToConvPtr, char **retValPtr)
 	*retValPtr = retVal;
 
 	return 0;
-}
+} /* -----  end of function hexToDec  ----- */
 
-int intFromNonDecimal(int constant, int base, int powerModifier, int inputSize)
+/*
+ * ===  FUNCTION  ======================================================================
+ *         Name:  longFromNonDecimal
+ *  Description:  return an int from a binary character or hexadecimal character.
+ * 				  Used when converting a
+ * =====================================================================================
+ */
+int longFromNonDecimal(int constant, int base, int powerModifier, int inputSize)
 {
-	double valToAdd;
-	valToAdd = constant * pow(base, (double)(inputSize - (powerModifier + 1)));
-	return (int)valToAdd;
-}
+	long double valToAdd;
+	valToAdd = constant * pow(base, (long double)(inputSize - (powerModifier + 1)));
+	return (long)valToAdd;
+} /* -----  end of function parseArgs  ----- */
 
+/*
+ * ===  FUNCTION  ======================================================================
+ *         Name:  stringFromLong
+ *  Description:  converts a long into it's string representation (which is saved at
+ * 				  the address the returnValue pointer points to)
+ * =====================================================================================
+ */
 void stringFromLong(long resultAsLong, int sizeOfReturnString, char *retVal)
 {
 	for (int i = 0; i < sizeOfReturnString; i++)
@@ -199,8 +379,14 @@ void stringFromLong(long resultAsLong, int sizeOfReturnString, char *retVal)
 		resultAsLong /= 10;
 	}
 	*(retVal + sizeOfReturnString) = '\0';
-}
+} /* -----  end of function longFromNonDecimal  ----- */
 
+/*
+ * ===  FUNCTION  ======================================================================
+ *         Name:  intToHexCharacter
+ *  Description:  converts an int (0 <= int < 16) into a hex character
+ * =====================================================================================
+ */
 char intToHexCharacter(int i)
 {
 	switch (i)
@@ -234,8 +420,8 @@ char intToHexCharacter(int i)
 	case 13:
 		return 'd';
 	case 14:
-		return 'f';
+		return 'e';
 	case 15:
-		return 'g';
+		return 'f';
 	}
-}
+} /* -----  end of function intToHexCharacter  ----- */
