@@ -32,7 +32,7 @@ void binToDec(char *valToConv, char **retPtr){
 		resultAsInt /= 10;
 	}
 	retVal[sizeOfReturnString] = '\0';
-	printf("%s\n", retVal);
+	*retPtr = retVal;
 }
 
 void decToBin(char *valToConv, char **retPtr)

@@ -68,15 +68,19 @@ int main ( int argc, char *argv[] )
 	char *conversionType;
 	conversionType = (char *) malloc(sizeof(char) * 5);
 
-	char **valToConvPtr;
+	char **valToConvPtr = (char **) malloc(sizeof(char**));
 
 	int err = parseArgs(conversionType, valToConvPtr, argc, argv);
 	if(err){
 		printf("Error in arguments. Exiting...\n");
 		return EXIT_FAILURE;
 	}
-	char **retValue;
-	decToBin(*valToConvPtr, retValue);
+
+	char **retValue = (char **) malloc(sizeof(char**));
+
+	binToDec(*valToConvPtr, retValue);
+	printf("%s\n", *retValue);
+
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
 
