@@ -117,7 +117,6 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 	char **retValuePtr = (char **)malloc(sizeof(char **));
-	hexToDec(*valToConvPtr, retValuePtr);
 	callFunctionFromFlag(conversionType, valToConvPtr, retValuePtr);
 	printf("%s\n", *retValuePtr);
 	return EXIT_SUCCESS;

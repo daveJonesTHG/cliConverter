@@ -5,11 +5,6 @@ int binToHex(char *valToConv, char **retPtr)
 	return 0;
 }
 
-int decToHex(char *valToConv, char **retPtr)
-{
-	return 0;
-}
-
 int hexToBin(char *valToConv, char **retPtr)
 {
 	return 0;
