@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 	char **retValuePtr = (char **)malloc(sizeof(char **));
-	hexToDec(*valToConvPtr, retValuePtr);
+	decToHex(*valToConvPtr, retValuePtr);
 	printf("%s\n", *retValuePtr);
 	return EXIT_SUCCESS;
 } /* ----------  end of function main  ---------- */

@@ -32,7 +32,7 @@ int binToDec(char *valToConvPtr, char **retValPtr)
 	if (resultAsLong == 0)
 		sizeOfReturnString = 1;
 	else
-		sizeOfReturnString = floor(log10(abs(resultAsLong))) + 1;
+		sizeOfReturnString = floor(log10(labs(resultAsLong))) + 1;
 
 	char *retVal = (char *)malloc(sizeof(char) * (sizeOfReturnString + 1));
 
@@ -50,6 +50,34 @@ void decToBin(char *valToConvPtr, char **retValPtr)
 		;
 	firstPower--;
 	printf("%d\n", firstPower);
+}
+
+int decToHex(char *valToConvPtr, char **retValPtr)
+{
+	long inputAsLong;
+	int inputSize = 0;
+	int sizeOfReturnString;
+
+	while (*(valToConvPtr + ++inputSize) != '\0')
+		;
+	inputAsLong = atol(valToConvPtr);
+	if (inputAsLong == 0 && (*valToConvPtr != '0' || inputSize != 1))
+		return 1;
+	if (inputAsLong == 0)
+		sizeOfReturnString = 1;
+	else
+		sizeOfReturnString = floor(log2(labs(inputAsLong)) / log2(16)) + 1;
+	char *retVal = (char *)malloc(sizeof(char) * (sizeOfReturnString + 1));
+
+	for (int i = 0; i < sizeOfReturnString; i++)
+	{
+		retVal[sizeOfReturnString - (i + 1)] = intToHexCharacter(inputAsLong % 16);
+		inputAsLong /= 16;
+	}
+	*(retVal + sizeOfReturnString) = '\0';
+	*retValPtr = retVal;
+
+	return 0;
 }
 
 int hexToDec(char *valToConvPtr, char **retValPtr)
@@ -132,7 +160,7 @@ int hexToDec(char *valToConvPtr, char **retValPtr)
 	if (resultAsLong == 0)
 		sizeOfReturnString = 1;
 	else
-		sizeOfReturnString = floor(log10(abs(resultAsLong))) + 1;
+		sizeOfReturnString = floor(log10(labs(resultAsLong))) + 1;
 
 	char *retVal = (char *)malloc(sizeof(char) * (sizeOfReturnString + 1));
 
@@ -160,4 +188,43 @@ void stringFromLong(long resultAsLong, int sizeOfReturnString, char *retVal)
 		resultAsLong /= 10;
 	}
 	*(retVal + sizeOfReturnString) = '\0';
+}
+
+char intToHexCharacter(int i)
+{
+	switch (i)
+	{
+	case 0:
+		return '0';
+	case 1:
+		return '1';
+	case 2:
+		return '2';
+	case 3:
+		return '3';
+	case 4:
+		return '4';
+	case 5:
+		return '5';
+	case 6:
+		return '6';
+	case 7:
+		return '7';
+	case 8:
+		return '8';
+	case 9:
+		return '9';
+	case 10:
+		return 'a';
+	case 11:
+		return 'b';
+	case 12:
+		return 'c';
+	case 13:
+		return 'd';
+	case 14:
+		return 'f';
+	case 15:
+		return 'g';
+	}
 }
