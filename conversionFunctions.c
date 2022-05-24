@@ -56,12 +56,20 @@ int binToDec(char *valToConvPtr, char **retValPtr)
  */
 int decToBin(char *valToConvPtr, char **retValPtr)
 {
-	int firstPower = 1;
-	int inputAsInt = atoi(valToConvPtr);
-	while ((int)pow(2, (double)++firstPower) < inputAsInt)
+	int returnValueLength = -1;
+	long inputAsLong = (long) atoi(valToConvPtr);
+	while(inputAsLong >= pow(2, ++returnValueLength))
 		;
-	firstPower--;
-	printf("%d\n", firstPower);
+	char *retVal = (char *)malloc(sizeof(char) * (returnValueLength + 1));
+
+	for(int i = 1; i <= returnValueLength; i++){
+		*(retVal + (returnValueLength - i)) = (char)((inputAsLong % 2) + '0');
+		inputAsLong = inputAsLong / 2;
+	}
+	*(retVal + returnValueLength) = '\0';
+
+	*retValPtr = retVal;
+
 	return 0;
 } /* -----  end of function decToBin  ----- */
 
