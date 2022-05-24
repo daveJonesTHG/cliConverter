@@ -424,4 +424,6 @@ char intToHexCharacter(int i)
 	case 15:
 		return 'f';
 	}
+
+	return '\0';
 } /* -----  end of function intToHexCharacter  ----- */
