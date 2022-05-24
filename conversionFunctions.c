@@ -1,5 +1,20 @@
 #include "BaseConverter.h"
 
+int binToHex(char *valToConv, char **retPtr)
+{
+	return 0;
+}
+
+int decToHex(char *valToConv, char **retPtr)
+{
+	return 0;
+}
+
+int hexToBin(char *valToConv, char **retPtr)
+{
+	return 0;
+}
+
 int binToDec(char *valToConvPtr, char **retValPtr)
 {
 	long resultAsLong = 0;
@@ -42,7 +57,7 @@ int binToDec(char *valToConvPtr, char **retValPtr)
 	return 0;
 }
 
-void decToBin(char *valToConvPtr, char **retValPtr)
+int decToBin(char *valToConvPtr, char **retValPtr)
 {
 	int firstPower = 1;
 	int inputAsInt = atoi(valToConvPtr);
@@ -50,6 +65,7 @@ void decToBin(char *valToConvPtr, char **retValPtr)
 		;
 	firstPower--;
 	printf("%d\n", firstPower);
+	return 0;
 }
 
 int decToHex(char *valToConvPtr, char **retValPtr)
