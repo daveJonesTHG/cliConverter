@@ -59,6 +59,36 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 	return 0;
 } /* -----  end of function parseArgs  ----- */
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  callFunctionFromFlag
+ *  Description:  
+ * =====================================================================================
+ */
+
+void callFunctionFromFlag (char *conversionType, char **valToConvPtr, char **retValPtr)
+{
+	if(strcmp(conversionType, "--db") == 0){
+		decToBin(*valToConvPtr, retValPtr);
+	}
+	if(strcmp(conversionType, "--bd") == 0){
+		binToDec(*valToConvPtr, retValPtr);
+	}
+	if(strcmp(conversionType, "--hb") == 0){
+		hexToBin(*valToConvPtr, retValPtr);
+	}
+	if(strcmp(conversionType, "--bh") == 0){
+		binToHex(*valToConvPtr, retValPtr);
+	}
+	if(strcmp(conversionType, "--dh") == 0){
+		decToHex(*valToConvPtr, retValPtr);
+	}
+	if(strcmp(conversionType, "--hd") == 0){
+		hexToDec(*valToConvPtr, retValPtr);
+	}
+	return;
+}		/* -----  end of function callFunctionFromFlag  ----- */
+
 /*
  * ===  FUNCTION  ======================================================================
  *         Name:  main
@@ -82,6 +112,8 @@ int main(int argc, char *argv[])
 	}
 	char **retValuePtr = (char **)malloc(sizeof(char **));
 	hexToDec(*valToConvPtr, retValuePtr);
+	callFunctionFromFlag(conversionType, valToConvPtr, retValuePtr);
+
 	printf("%s\n", *retValuePtr);
 	return EXIT_SUCCESS;
 } /* ----------  end of function main  ---------- */
