@@ -1,44 +1,45 @@
 #include "BaseConverter.h"
 
-void binToDec(char *valToConvPtr, char **retValPtr)
+int binToDec(char *valToConvPtr, char **retValPtr)
 {
+	long resultAsLong = 0;
+	int i;
+	int sizeOfReturnString;
+
 	int inputSize = 0;
 	while (*(valToConvPtr + ++inputSize) != '\0')
 		;
 
-	int resultAsInt = 0;
-	int i;
-	int sizeOfReturnString;
+	if (*valToConvPtr == '0' && (*(valToConvPtr + 1) == 'b' || *(valToConvPtr + 1) == 'B'))
+	{
+		inputSize -= 2;
+		valToConvPtr += 2;
+	}
 
 	for (i = 0; i < inputSize; i++)
 	{
-		if (valToConvPtr[i] == '1')
+		switch (valToConvPtr[i])
 		{
-			double valToAdd;
-			valToAdd = pow(2, (double)(inputSize - (i + 1)));
-			resultAsInt += (int)valToAdd;
+		case '0':
+			break;
+		case '1':
+			resultAsLong += intFromNonDecimal(1, 2, i, inputSize);
+			break;
+		default:
+			return 1;
 		}
 	}
-	if (resultAsInt == 0)
+	if (resultAsLong == 0)
 		sizeOfReturnString = 1;
 	else
-		sizeOfReturnString = floor(log10(abs(resultAsInt))) + 1;
+		sizeOfReturnString = floor(log10(abs(resultAsLong))) + 1;
 
-	char *retVal;
-	retVal = (char *)malloc(sizeof(char) * (sizeOfReturnString + 1));
+	char *retVal = (char *)malloc(sizeof(char) * (sizeOfReturnString + 1));
 
-	for (i = 0; i < sizeOfReturnString; i++)
-	{
-		int temp;
-		temp = resultAsInt % 10;
-		retVal[sizeOfReturnString - (i + 1)] = temp + '0';
-		resultAsInt -= temp;
-		resultAsInt /= 10;
-	}
-	// retVal[sizeOfReturnString] = '\0';
-	*(retVal + sizeOfReturnString) = '\0';
+	stringFromLong(resultAsLong, sizeOfReturnString, retVal);
 
 	*retValPtr = retVal;
+	return 0;
 }
 
 void decToBin(char *valToConvPtr, char **retValPtr)
@@ -61,7 +62,7 @@ int hexToDec(char *valToConvPtr, char **retValPtr)
 	while (*(valToConvPtr + ++inputSize) != '\0')
 		;
 
-	if (*valToConvPtr == '0' && *(valToConvPtr + 1) == 'x')
+	if (*valToConvPtr == '0' && (*(valToConvPtr + 1) == 'x' || *(valToConvPtr + 1) == 'X'))
 	{
 		inputSize -= 2;
 		valToConvPtr += 2;
@@ -137,7 +138,6 @@ int hexToDec(char *valToConvPtr, char **retValPtr)
 
 	stringFromLong(resultAsLong, sizeOfReturnString, retVal);
 	*retValPtr = retVal;
-	printf("Converted value: %s\n", *retValPtr);
 
 	return 0;
 }
@@ -153,7 +153,7 @@ void stringFromLong(long resultAsLong, int sizeOfReturnString, char *retVal)
 {
 	for (int i = 0; i < sizeOfReturnString; i++)
 	{
-		int temp;
+		long temp;
 		temp = resultAsLong % 10;
 		retVal[sizeOfReturnString - (i + 1)] = temp + '0';
 		resultAsLong -= temp;

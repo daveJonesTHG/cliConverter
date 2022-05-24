@@ -72,11 +72,7 @@ int main(int argc, char *argv[])
 	char *conversionType;
 	conversionType = (char *)malloc(sizeof(char) * 5);
 
-	char **valToConvPtr = malloc(sizeof(char **));
-	// char **valToConvPtr;
-
-	printf("Value to convert pointer:\n");
-	printf("%p\n", valToConvPtr);
+	char **valToConvPtr = (char **)malloc(sizeof(char **));
 
 	int err = parseArgs(conversionType, valToConvPtr, argc, argv);
 	if (err)
@@ -84,12 +80,8 @@ int main(int argc, char *argv[])
 		printf("Error in arguments. Exiting...\n");
 		return EXIT_FAILURE;
 	}
-	char **retValuePtr = malloc(sizeof(char **));
-	// char **retValuePtr;
-
-	printf("Ret value pointer:\n");
-	printf("%p\n", retValuePtr);
+	char **retValuePtr = (char **)malloc(sizeof(char **));
 	hexToDec(*valToConvPtr, retValuePtr);
-	printf("Converted value: %s\n", *retValuePtr);
+	printf("%s\n", *retValuePtr);
 	return EXIT_SUCCESS;
 } /* ----------  end of function main  ---------- */

@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-void binToDec(char *valToConv, char **retPtr);
+int binToDec(char *valToConv, char **retPtr);
 void decToBin(char *valToConv, char **retPtr);
 void binToHex(char *valToConv, char **retPtr);
 void hexToBin(char *valToConv, char **retPtr);
