@@ -3,24 +3,25 @@
  *
  *       Filename:  BaseConvert.c
  *
- *    Description:
+ *    Description:	Program for converting between decimal, hexadecimal and binary on the command line
  *
  *        Version:  1.0
  *        Created:  23/05/2022 13:41:43
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (),
- *   Organization:
+ *        Authors:  Dave Jones and Chris Woodham
+ *   Organization:	THG
  *
  * =====================================================================================
  */
+
 #include "BaseConverter.h"
 
 /*
  * ===  FUNCTION  ======================================================================
  *         Name:  parseArgs
- *  Description:
+ *  Description:  parse the command line arguments
  * =====================================================================================
  */
 
@@ -59,40 +60,46 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 	return 0;
 } /* -----  end of function parseArgs  ----- */
 
-/* 
+/*
  * ===  FUNCTION  ======================================================================
  *         Name:  callFunctionFromFlag
- *  Description:  
+ *  Description:  call the appropriate conversion function depending on the flag passed
+ * 				  as a command line argument
  * =====================================================================================
  */
 
-void callFunctionFromFlag (char *conversionType, char **valToConvPtr, char **retValPtr)
+void callFunctionFromFlag(char *conversionType, char **valToConvPtr, char **retValPtr)
 {
-	if(strcmp(conversionType, "--db") == 0){
+	if (strcmp(conversionType, "--db") == 0)
+	{
 		decToBin(*valToConvPtr, retValPtr);
 	}
-	if(strcmp(conversionType, "--bd") == 0){
+	if (strcmp(conversionType, "--bd") == 0)
+	{
 		binToDec(*valToConvPtr, retValPtr);
 	}
-	if(strcmp(conversionType, "--hb") == 0){
+	if (strcmp(conversionType, "--hb") == 0)
+	{
 		hexToBin(*valToConvPtr, retValPtr);
 	}
-	if(strcmp(conversionType, "--bh") == 0){
+	if (strcmp(conversionType, "--bh") == 0)
+	{
 		binToHex(*valToConvPtr, retValPtr);
 	}
-	if(strcmp(conversionType, "--dh") == 0){
+	if (strcmp(conversionType, "--dh") == 0)
+	{
 		decToHex(*valToConvPtr, retValPtr);
 	}
-	if(strcmp(conversionType, "--hd") == 0){
+	if (strcmp(conversionType, "--hd") == 0)
+	{
 		hexToDec(*valToConvPtr, retValPtr);
 	}
 	return;
-}		/* -----  end of function callFunctionFromFlag  ----- */
+} /* -----  end of function callFunctionFromFlag  ----- */
 
 /*
  * ===  FUNCTION  ======================================================================
  *         Name:  main
- *  Description:
  * =====================================================================================
  */
 
@@ -111,9 +118,7 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 	char **retValuePtr = (char **)malloc(sizeof(char **));
-	hexToDec(*valToConvPtr, retValuePtr);
 	callFunctionFromFlag(conversionType, valToConvPtr, retValuePtr);
-
 	printf("%s\n", *retValuePtr);
 	return EXIT_SUCCESS;
 } /* ----------  end of function main  ---------- */

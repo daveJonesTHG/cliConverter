@@ -10,4 +10,5 @@ int hexToBin(char *valToConv, char **retPtr);
 int decToHex(char *valToConv, char **retPtr);
 int hexToDec(char *valToConv, char **retPtr);
 void stringFromLong(long resultAsLong, int sizeOfReturnString, char *retVal);
-int intFromNonDecimal(int constant, int base, int powerModifier, int inputSize);
+int longFromNonDecimal(int constant, int base, int powerModifier, int inputSize);
+char intToHexCharacter(int i);
