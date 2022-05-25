@@ -23,13 +23,11 @@ int longFromNonDecimal(int constant, int base, int powerModifier, int inputSize)
  */
 void stringFromLong(long resultAsLong, int sizeOfReturnString, int negativeModifier, char *retVal)
 {
-    printf("%ld\n", resultAsLong);
     for (int i = 0; i < sizeOfReturnString - negativeModifier; i++)
     {
         long temp;
         temp = resultAsLong % 10;
         retVal[sizeOfReturnString - (i + 1)] = temp + '0';
-        printf("Current state: %s\n", retVal);
         resultAsLong -= temp;
         resultAsLong /= 10;
     }
