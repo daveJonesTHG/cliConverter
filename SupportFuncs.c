@@ -27,7 +27,7 @@ void stringFromLong(long resultAsLong, int sizeOfReturnString, int negativeModif
     {
         long temp;
         temp = resultAsLong % 10;
-        retVal[sizeOfReturnString - (i + 1)] = temp + '0';
+        *(retVal + (sizeOfReturnString - (i + 1))) = temp + '0';
         resultAsLong -= temp;
         resultAsLong /= 10;
     }

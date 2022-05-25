@@ -40,15 +40,17 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 	for (i = 0; i < 6; i++)
 		*(conversionType + i) = *(argv[1] + i);
 
-	for(i = 0; i < argc; i++){
-		if(*argv[i] == '-'){
-			if(*(argv[i] + 1) == 's')
+	for (i = 0; i < argc; i++)
+	{
+		if (*argv[i] == '-')
+		{
+			if (*(argv[i] + 1) == 's')
 				sign = 1;
-		} 
+		}
 	}
 
 	int valueArgNum = 0;
-	while(*argv[++valueArgNum] == '-')
+	while (*argv[++valueArgNum] == '-')
 		;
 
 	int sizeOfValue = 0;
@@ -83,11 +85,11 @@ void callFunctionFromFlag(char *conversionType, char **valToConvPtr, char **retV
 {
 	if (strcmp(conversionType, "--db") == 0 && !sign)
 	{
-		decToBin(*valToConvPtr, retValPtr, 0, 0);
+		decToBin(*valToConvPtr, retValPtr, 0);
 	}
 	if (strcmp(conversionType, "--bd") == 0 && !sign)
 	{
-		binToDec(*valToConvPtr, retValPtr, 0);
+		binToDec(*valToConvPtr, retValPtr);
 	}
 	if (strcmp(conversionType, "--hb") == 0)
 	{
@@ -107,11 +109,11 @@ void callFunctionFromFlag(char *conversionType, char **valToConvPtr, char **retV
 	}
 	if (strcmp(conversionType, "--bd") == 0 && sign)
 	{
-		binToDec(*valToConvPtr, retValPtr, 1);
+		binToDec(*valToConvPtr, retValPtr);
 	}
 	if (strcmp(conversionType, "--db") == 0 && sign)
 	{
-		decToBin(*valToConvPtr, retValPtr, 1, 1);
+		decToBin(*valToConvPtr, retValPtr, 1);
 	}
 
 	return;
@@ -140,5 +142,7 @@ int main(int argc, char *argv[])
 	char **retValuePtr = (char **)malloc(sizeof(char **));
 	callFunctionFromFlag(conversionType, valToConvPtr, retValuePtr);
 	printf("%s\n", *retValuePtr);
+	free(*retValuePtr);
+	free(retValuePtr);
 	return EXIT_SUCCESS;
 } /* ----------  end of function main  ---------- */

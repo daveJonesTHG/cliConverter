@@ -2,11 +2,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <inttypes.h>
 
 extern int sign;
 
-int binToDec(char *valToConv, char **retPtr, int signedMode);
-int decToBin(char *valToConv, char **retPtr, int signedMode, int returnLong);
+int binToDec(char *valToConvPtr, char **retValPtr);
+int unsignedBinToDec(char *valToConvPtr, char **retValPtr, uint64_t inputSize);
+int signedBinToDec(char *valToConvPtr, char **retValPtr, uint64_t inputSize);
+int decToBin(char *valToConvPtr, char **retValPtr, int returnLong);
 int unsignedDecToBin(char *valToConvPtr, char **retValPtr);
 int signedDecToBin(char *valToConvPtr, char **retValPtr, int returnLong);
 int binToHex(char *valToConv, char **retPtr);
