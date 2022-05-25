@@ -104,14 +104,15 @@ int signedDecToBin(char *valToConvPtr, char **retValPtr, int returnLong)
     if (inputAsLong < 0)
     {
         *(retVal) = '1';
-        long currentValue = (long)pow(2, (returnValueLength - 1)) * -1;
+        long remainingAmount = ((long)pow(2, (returnValueLength - 1)) * -1) + absInputAsLong;
+        long currentValue;
         for (int i = 1; i < returnValueLength; i++)
         {
-            if ((currentValue + absInputAsLong) <= 0)
+            currentValue = pow(2, (returnValueLength - (i + 1)));
+            if ((remainingAmount + currentValue) <= 0)
             {
                 *(retVal + i) = '1';
-                currentValue += absInputAsLong;
-                printf("Current value: %ld", currentValue / 1000000);
+                remainingAmount += currentValue;
             }
             else
                 *(retVal + i) = '0';
@@ -133,43 +134,3 @@ int signedDecToBin(char *valToConvPtr, char **retValPtr, int returnLong)
 
     return 0;
 }
-
-int decToBin2(char *valToConvPtr, char **retValPtr, int signedMode, int returnLong)
-{
-    int returnValueLength;
-    long inputAsLong = atol(valToConvPtr);
-    long absInputAsLong = labs(inputAsLong);
-
-    if (signedMode)
-    {
-        if (returnLong)
-            returnValueLength = 64;
-        else
-            returnValueLength = 32;
-    }
-    else
-    {
-        returnValueLength = -1;
-        while (absInputAsLong >= pow(2, ++returnValueLength))
-            ;
-    }
-
-    char *retVal = (char *)malloc(sizeof(char) * (returnValueLength + 1));
-    if (signedMode)
-    {
-        if (inputAsLong < 0)
-            *(retVal) = '1';
-        else
-            *(retVal) = '0';
-    }
-    for (int i = 1; i <= returnValueLength - signedMode; i++)
-    {
-        *(retVal + (returnValueLength - i)) = (char)((inputAsLong % 2) + '0');
-        inputAsLong /= 2;
-    }
-    *(retVal + returnValueLength) = '\0';
-
-    *retValPtr = retVal;
-
-    return 0;
-} /* -----  end of function decToBin  ----- */
