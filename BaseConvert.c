@@ -17,6 +17,7 @@
  */
 
 #include "BaseConverter.h"
+int sign = 0;
 
 /*
  * ===  FUNCTION  ======================================================================
@@ -27,7 +28,7 @@
 
 int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 {
-	if (argc != 3)
+	if (argc != 3 && argc != 4)
 		return 1;
 
 	if (strcmp(argv[1], "--hb") != 0 && strcmp(argv[1], "--hd") != 0 && strcmp(argv[1], "--db") != 0 && strcmp(argv[1], "--dh") != 0 && strcmp(argv[1], "--bh") != 0 && strcmp(argv[1], "--bd") != 0)
@@ -36,15 +37,25 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 		return 1;
 	}
 	int i;
-	for (i = 0; i < 5; i++)
+	for (i = 0; i < 6; i++)
 		*(conversionType + i) = *(argv[1] + i);
 
-	int sizeOfValue = 0;
+	for(i = 0; i < argc; i++){
+		if(*argv[i] == '-'){
+			if(*(argv[i] + 1) == 's')
+				sign = 1;
+		} 
+	}
 
+	int valueArgNum = 0;
+	while(*argv[++valueArgNum] == '-')
+		;
+
+	int sizeOfValue = 0;
 	do
 	{
 		++sizeOfValue;
-	} while (*(argv[2] + sizeOfValue) != '\0');
+	} while (*(argv[valueArgNum] + sizeOfValue) != '\0');
 	++sizeOfValue;
 
 	char *valToConvert;
@@ -52,7 +63,7 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 	valToConvert = (char *)malloc(sizeof(char) * sizeOfValue);
 	for (i = 0; i < sizeOfValue; i++)
 	{
-		*(valToConvert + i) = *(argv[2] + i);
+		*(valToConvert + i) = *(argv[valueArgNum] + i);
 	}
 
 	*valToConvPtr = valToConvert;
@@ -70,13 +81,13 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 
 void callFunctionFromFlag(char *conversionType, char **valToConvPtr, char **retValPtr)
 {
-	if (strcmp(conversionType, "--db") == 0)
+	if (strcmp(conversionType, "--db") == 0 && !sign)
 	{
-		decToBin(*valToConvPtr, retValPtr);
+		decToBin(*valToConvPtr, retValPtr, 0, 0);
 	}
-	if (strcmp(conversionType, "--bd") == 0)
+	if (strcmp(conversionType, "--bd") == 0 && !sign)
 	{
-		binToDec(*valToConvPtr, retValPtr);
+		binToDec(*valToConvPtr, retValPtr, 0);
 	}
 	if (strcmp(conversionType, "--hb") == 0)
 	{
@@ -94,6 +105,15 @@ void callFunctionFromFlag(char *conversionType, char **valToConvPtr, char **retV
 	{
 		hexToDec(*valToConvPtr, retValPtr);
 	}
+	if (strcmp(conversionType, "--bd") == 0 && sign)
+	{
+		binToDec(*valToConvPtr, retValPtr, 1);
+	}
+	if (strcmp(conversionType, "--db") == 0 && sign)
+	{
+		decToBin(*valToConvPtr, retValPtr, 1, 1);
+	}
+
 	return;
 } /* -----  end of function callFunctionFromFlag  ----- */
 
@@ -107,7 +127,7 @@ int main(int argc, char *argv[])
 {
 
 	char *conversionType;
-	conversionType = (char *)malloc(sizeof(char) * 5);
+	conversionType = (char *)malloc(sizeof(char) * 6);
 
 	char **valToConvPtr = (char **)malloc(sizeof(char **));
 
