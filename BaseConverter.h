@@ -4,7 +4,9 @@
 #include <math.h>
 
 int binToDec(char *valToConv, char **retPtr, int signedMode);
-int decToBin(char *valToConv, char **retPtr, int signedMode);
+int decToBin(char *valToConv, char **retPtr, int signedMode, int returnLong);
+int unsignedDecToBin(char *valToConvPtr, char **retValPtr);
+int signedDecToBin(char *valToConvPtr, char **retValPtr, int returnLong);
 int binToHex(char *valToConv, char **retPtr);
 int hexToBin(char *valToConv, char **retPtr);
 int decToHex(char *valToConv, char **retPtr);

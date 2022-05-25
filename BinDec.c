@@ -59,7 +59,15 @@ int binToDec(char *valToConvPtr, char **retValPtr, int signedMode)
  *  Description:  convert from decimal to binary
  * =====================================================================================
  */
-int decToBin(char *valToConvPtr, char **retValPtr, int signedMode)
+int decToBin(char *valToConvPtr, char **retValPtr, int signedMode, int returnLong)
+{
+    if (signedMode)
+        return signedDecToBin(valToConvPtr, retValPtr, returnLong);
+    else
+        return unsignedDecToBin(valToConvPtr, retValPtr);
+} /* -----  end of function decToBin  ----- */
+
+int unsignedDecToBin(char *valToConvPtr, char **retValPtr)
 {
     int returnValueLength = -1;
     long inputAsLong = atol(valToConvPtr);
@@ -69,6 +77,92 @@ int decToBin(char *valToConvPtr, char **retValPtr, int signedMode)
     char *retVal = (char *)malloc(sizeof(char) * (returnValueLength + 1));
 
     for (int i = 1; i <= returnValueLength; i++)
+    {
+        *(retVal + (returnValueLength - i)) = (char)((inputAsLong % 2) + '0');
+        inputAsLong /= 2;
+    }
+    *(retVal + returnValueLength) = '\0';
+
+    *retValPtr = retVal;
+
+    return 0;
+}
+
+int signedDecToBin(char *valToConvPtr, char **retValPtr, int returnLong)
+{
+    int returnValueLength;
+    long inputAsLong = atol(valToConvPtr);
+    long absInputAsLong = labs(inputAsLong);
+
+    if (returnLong)
+        returnValueLength = 64;
+    else
+        returnValueLength = 32;
+
+    char *retVal = (char *)malloc(sizeof(char) * (returnValueLength + 1));
+
+    if (inputAsLong < 0)
+    {
+        *(retVal) = '1';
+        long currentValue = (long)pow(2, (returnValueLength - 1)) * -1;
+        for (int i = 1; i < returnValueLength; i++)
+        {
+            if ((currentValue + absInputAsLong) <= 0)
+            {
+                *(retVal + i) = '1';
+                currentValue += absInputAsLong;
+                printf("Current value: %ld", currentValue / 1000000);
+            }
+            else
+                *(retVal + i) = '0';
+        }
+    }
+    else
+    {
+        *(retVal) = '0';
+        for (int i = 1; i <= returnValueLength - 1; i++)
+        {
+            *(retVal + (returnValueLength - i)) = (char)((inputAsLong % 2) + '0');
+            inputAsLong /= 2;
+        }
+    }
+
+    *(retVal + returnValueLength) = '\0';
+
+    *retValPtr = retVal;
+
+    return 0;
+}
+
+int decToBin2(char *valToConvPtr, char **retValPtr, int signedMode, int returnLong)
+{
+    int returnValueLength;
+    long inputAsLong = atol(valToConvPtr);
+    long absInputAsLong = labs(inputAsLong);
+
+    if (signedMode)
+    {
+        if (returnLong)
+            returnValueLength = 64;
+        else
+            returnValueLength = 32;
+    }
+    else
+    {
+        returnValueLength = -1;
+        while (absInputAsLong >= pow(2, ++returnValueLength))
+            ;
+    }
+
+    char *retVal = (char *)malloc(sizeof(char) * (returnValueLength + 1));
+    if (signedMode)
+    {
+        if (inputAsLong < 0)
+            *(retVal) = '1';
+        else
+            *(retVal) = '0';
+    }
+    for (int i = 1; i <= returnValueLength - signedMode; i++)
     {
         *(retVal + (returnValueLength - i)) = (char)((inputAsLong % 2) + '0');
         inputAsLong /= 2;

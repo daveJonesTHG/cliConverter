@@ -30,7 +30,7 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 	if (argc != 3)
 		return 1;
 
-	if (strcmp(argv[1], "--hbu") != 0 && strcmp(argv[1], "--hdu") != 0 && strcmp(argv[1], "--dbu") != 0 && strcmp(argv[1], "--dhu") != 0 && strcmp(argv[1], "--bhu") != 0 && strcmp(argv[1], "--bdu") != 0 && strcmp(argv[1], "--bds") != 0)
+	if (strcmp(argv[1], "--hbu") != 0 && strcmp(argv[1], "--hdu") != 0 && strcmp(argv[1], "--dbu") != 0 && strcmp(argv[1], "--dhu") != 0 && strcmp(argv[1], "--bhu") != 0 && strcmp(argv[1], "--bdu") != 0 && strcmp(argv[1], "--bds") != 0 && strcmp(argv[1], "--dbs") != 0)
 	{
 		printf("First argument should be of the form --xy, where x and y are h, d or b\n");
 		return 1;
@@ -72,7 +72,7 @@ void callFunctionFromFlag(char *conversionType, char **valToConvPtr, char **retV
 {
 	if (strcmp(conversionType, "--dbu") == 0)
 	{
-		decToBin(*valToConvPtr, retValPtr);
+		decToBin(*valToConvPtr, retValPtr, 0, 0);
 	}
 	if (strcmp(conversionType, "--bdu") == 0)
 	{
@@ -98,6 +98,11 @@ void callFunctionFromFlag(char *conversionType, char **valToConvPtr, char **retV
 	{
 		binToDec(*valToConvPtr, retValPtr, 1);
 	}
+	if (strcmp(conversionType, "--dbs") == 0)
+	{
+		decToBin(*valToConvPtr, retValPtr, 1, 1);
+	}
+
 	return;
 } /* -----  end of function callFunctionFromFlag  ----- */
 
@@ -123,6 +128,6 @@ int main(int argc, char *argv[])
 	}
 	char **retValuePtr = (char **)malloc(sizeof(char **));
 	callFunctionFromFlag(conversionType, valToConvPtr, retValuePtr);
-	printf("Here it is: %s\n", *retValuePtr);
+	printf("%s\n", *retValuePtr);
 	return EXIT_SUCCESS;
 } /* ----------  end of function main  ---------- */
