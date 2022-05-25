@@ -17,6 +17,7 @@
  */
 
 #include "BaseConverter.h"
+int sign = 0;
 
 /*
  * ===  FUNCTION  ======================================================================
@@ -27,10 +28,10 @@
 
 int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 {
-	if (argc != 3)
+	if (argc != 3 && argc != 4)
 		return 1;
 
-	if (strcmp(argv[1], "--hbu") != 0 && strcmp(argv[1], "--hdu") != 0 && strcmp(argv[1], "--dbu") != 0 && strcmp(argv[1], "--dhu") != 0 && strcmp(argv[1], "--bhu") != 0 && strcmp(argv[1], "--bdu") != 0 && strcmp(argv[1], "--bds") != 0 && strcmp(argv[1], "--dbs") != 0)
+	if (strcmp(argv[1], "--hb") != 0 && strcmp(argv[1], "--hd") != 0 && strcmp(argv[1], "--db") != 0 && strcmp(argv[1], "--dh") != 0 && strcmp(argv[1], "--bh") != 0 && strcmp(argv[1], "--bd") != 0)
 	{
 		printf("First argument should be of the form --xy, where x and y are h, d or b\n");
 		return 1;
@@ -39,12 +40,22 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 	for (i = 0; i < 6; i++)
 		*(conversionType + i) = *(argv[1] + i);
 
-	int sizeOfValue = 0;
+	for(i = 0; i < argc; i++){
+		if(*argv[i] == '-'){
+			if(*(argv[i] + 1) == 's')
+				sign = 1;
+		} 
+	}
 
+	int valueArgNum = 0;
+	while(*argv[++valueArgNum] == '-')
+		;
+
+	int sizeOfValue = 0;
 	do
 	{
 		++sizeOfValue;
-	} while (*(argv[2] + sizeOfValue) != '\0');
+	} while (*(argv[valueArgNum] + sizeOfValue) != '\0');
 	++sizeOfValue;
 
 	char *valToConvert;
@@ -52,7 +63,7 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 	valToConvert = (char *)malloc(sizeof(char) * sizeOfValue);
 	for (i = 0; i < sizeOfValue; i++)
 	{
-		*(valToConvert + i) = *(argv[2] + i);
+		*(valToConvert + i) = *(argv[valueArgNum] + i);
 	}
 
 	*valToConvPtr = valToConvert;
@@ -70,35 +81,35 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 
 void callFunctionFromFlag(char *conversionType, char **valToConvPtr, char **retValPtr)
 {
-	if (strcmp(conversionType, "--dbu") == 0)
+	if (strcmp(conversionType, "--db") == 0 && !sign)
 	{
 		decToBin(*valToConvPtr, retValPtr, 0, 0);
 	}
-	if (strcmp(conversionType, "--bdu") == 0)
+	if (strcmp(conversionType, "--bd") == 0 && !sign)
 	{
 		binToDec(*valToConvPtr, retValPtr, 0);
 	}
-	if (strcmp(conversionType, "--hbu") == 0)
+	if (strcmp(conversionType, "--hb") == 0)
 	{
 		hexToBin(*valToConvPtr, retValPtr);
 	}
-	if (strcmp(conversionType, "--bhu") == 0)
+	if (strcmp(conversionType, "--bh") == 0)
 	{
 		binToHex(*valToConvPtr, retValPtr);
 	}
-	if (strcmp(conversionType, "--dhu") == 0)
+	if (strcmp(conversionType, "--dh") == 0)
 	{
 		decToHex(*valToConvPtr, retValPtr);
 	}
-	if (strcmp(conversionType, "--hdu") == 0)
+	if (strcmp(conversionType, "--hd") == 0)
 	{
 		hexToDec(*valToConvPtr, retValPtr);
 	}
-	if (strcmp(conversionType, "--bds") == 0)
+	if (strcmp(conversionType, "--bd") == 0 && sign)
 	{
 		binToDec(*valToConvPtr, retValPtr, 1);
 	}
-	if (strcmp(conversionType, "--dbs") == 0)
+	if (strcmp(conversionType, "--db") == 0 && sign)
 	{
 		decToBin(*valToConvPtr, retValPtr, 1, 1);
 	}
