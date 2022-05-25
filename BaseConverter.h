@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-int sign;
+extern int sign;
 
 int binToDec(char *valToConv, char **retPtr, int signedMode);
 int decToBin(char *valToConv, char **retPtr, int signedMode, int returnLong);
