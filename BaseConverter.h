@@ -11,4 +11,3 @@ int decToHex(char *valToConv, char **retPtr);
 int hexToDec(char *valToConv, char **retPtr);
 void stringFromLong(long resultAsLong, int sizeOfReturnString, char *retVal);
 int longFromNonDecimal(int constant, int base, int powerModifier, int inputSize);
-char intToHexCharacter(int i);
