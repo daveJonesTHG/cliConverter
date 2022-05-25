@@ -61,10 +61,29 @@ int binToDec(char *valToConvPtr, char **retValPtr, int signedMode)
  */
 int decToBin(char *valToConvPtr, char **retValPtr, int signedMode, int returnLong)
 {
+    int i = 0;
     if (signedMode)
+    {
+        if (*valToConvPtr == '-')
+            valToConvPtr += 1;
+        while (*(valToConvPtr + i) != '\0')
+        {
+            if (*(valToConvPtr + i) < '0' || *(valToConvPtr + i) > '9')
+                return 1;
+            i++;
+        }
         return signedDecToBin(valToConvPtr, retValPtr, returnLong);
+    }
     else
+    {
+        while (*(valToConvPtr + i) != '\0')
+        {
+            if (*(valToConvPtr + i) < '0' || *(valToConvPtr + i) > '9')
+                return 1;
+            i++;
+        }
         return unsignedDecToBin(valToConvPtr, retValPtr);
+    }
 } /* -----  end of function decToBin  ----- */
 
 int unsignedDecToBin(char *valToConvPtr, char **retValPtr)
