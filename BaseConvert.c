@@ -26,7 +26,7 @@ int sign = 0;
  * =====================================================================================
  */
 
-int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
+int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[], int maxInputSize)
 {
 	if (argc != 3 && argc != 4)
 		return 1;
@@ -35,12 +35,11 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 	{
 		printf("First argument should be of the form --xy, where x and y are h, d or b\n");
 		return 1;
+	} else {
+		strlcpy(conversionType, argv[1], 5);
 	}
-	int i;
-	for (i = 0; i < 6; i++)
-		*(conversionType + i) = *(argv[1] + i);
-
-	for(i = 0; i < argc; i++){
+	
+	for(int i = 0; i < argc; i++){
 		if(*argv[i] == '-'){
 			if(*(argv[i] + 1) == 's')
 				sign = 1;
@@ -50,23 +49,9 @@ int parseArgs(char *conversionType, char **valToConvPtr, int argc, char *argv[])
 	int valueArgNum = 0;
 	while(*argv[++valueArgNum] == '-')
 		;
-
-	int sizeOfValue = 0;
-	do
-	{
-		++sizeOfValue;
-	} while (*(argv[valueArgNum] + sizeOfValue) != '\0');
-	++sizeOfValue;
-
-	char *valToConvert;
-
-	valToConvert = (char *)malloc(sizeof(char) * sizeOfValue);
-	for (i = 0; i < sizeOfValue; i++)
-	{
-		*(valToConvert + i) = *(argv[valueArgNum] + i);
-	}
-
-	*valToConvPtr = valToConvert;
+	
+	if(valToConvPtr != NULL)
+		*valToConvPtr = strndup(argv[valueArgNum], maxInputSize);
 
 	return 0;
 } /* -----  end of function parseArgs  ----- */
@@ -125,20 +110,23 @@ void callFunctionFromFlag(char *conversionType, char **valToConvPtr, char **retV
 
 int main(int argc, char *argv[])
 {
+	enum{
+		MAX_INPUT_SIZE = 128
+	};
 
-	char *conversionType;
-	conversionType = (char *)malloc(sizeof(char) * 6);
+	char conversionType[5];
 
-	char **valToConvPtr = (char **)malloc(sizeof(char **));
+	char *valToConvPtr = NULL;
 
-	int err = parseArgs(conversionType, valToConvPtr, argc, argv);
+	int err = parseArgs(conversionType, &valToConvPtr, argc, argv, MAX_INPUT_SIZE);
 	if (err)
 	{
 		printf("Error in arguments. Exiting...\n");
 		return EXIT_FAILURE;
 	}
 	char **retValuePtr = (char **)malloc(sizeof(char **));
-	callFunctionFromFlag(conversionType, valToConvPtr, retValuePtr);
+	callFunctionFromFlag(conversionType, &valToConvPtr, retValuePtr);
 	printf("%s\n", *retValuePtr);
+	free(retValuePtr);
 	return EXIT_SUCCESS;
 } /* ----------  end of function main  ---------- */
